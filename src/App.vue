@@ -1,10 +1,10 @@
 <template>
-  <div class="app">
+  <div class="app" :class="{ 'app--magazine': hideGlobalFooter }">
     <main class="main">
       <RouterView />
     </main>
 
-    <footer class="footer">
+    <footer v-if="!hideGlobalFooter" class="footer">
       <div class="footer-inner">
         <p>© 2026 Li Jin Tong</p>
       </div>
@@ -14,7 +14,13 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    hideGlobalFooter() {
+      const p = this.$route.path
+      return p === '/' || p === '/about'
+    }
+  }
 }
 </script>
 
@@ -27,6 +33,10 @@ export default {
   color: #000000;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     sans-serif;
+}
+
+.app--magazine {
+  background: #ffffff;
 }
 
 .main {

@@ -101,7 +101,7 @@ export default {
 
 .media {
   position: relative;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1 / 1;
   background: #f4f4f4;
   overflow: hidden;
 }

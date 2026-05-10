@@ -1,70 +1,119 @@
 <template>
-  <div class="home">
-    <section class="intro">
-      <div class="intro-row">
-        <h1 class="intro-title">Li Jin Tong</h1>
-        <RouterLink to="/about" class="intro-about">About me</RouterLink>
-      </div>
-    </section>
-
-    <section class="featured" aria-labelledby="featured-heading">
-      <div class="featured-head">
-        <h2 id="featured-heading" class="featured-title">
-          <span class="title-line">Portfolio</span>
-        </h2>
-        <div class="featured-nav" role="group" aria-label="作品轮播">
-          <button
-            type="button"
-            class="nav-btn"
-            aria-label="上一组"
-            @click="scrollCarousel(-1)"
-          >
-            &lt;
-          </button>
-          <button
-            type="button"
-            class="nav-btn nav-btn--dark"
-            aria-label="下一组"
-            @click="scrollCarousel(1)"
-          >
-            &gt;
-          </button>
+  <div class="home-shell">
+    <div class="frame">
+      <header class="frame-top">
+        <div class="brand">
+          <span class="brand-dot" aria-hidden="true" />
+          <span class="brand-name">Li Jin Tong</span>
         </div>
-      </div>
+        <RouterLink to="/about" class="top-link">About me</RouterLink>
+      </header>
 
-      <div
-        ref="carousel"
-        class="carousel"
-        tabindex="0"
-        @scroll.passive="onCarouselScroll"
-      >
-        <RouterLink
-          v-for="item in projects"
-          :key="item.id"
-          :to="{ name: 'WorkDetail', params: { id: item.id } }"
-          class="card card-link"
-        >
-          <div class="card-media">
-            <img :src="item.image" :alt="item.title" width="640" height="400" loading="lazy" />
+      <aside class="rail rail-left" aria-hidden="true">
+        <span class="rail-text">About Li Jin Tong</span>
+      </aside>
+
+      <div class="frame-scroll">
+        <section id="hero" class="hero">
+          <div class="hero-deco" aria-hidden="true">
+            <span class="deco i1">📖</span>
+            <span class="deco i2">✎</span>
+            <span class="deco i3">◇</span>
+            <span class="deco i4">✦</span>
+            <span class="deco i5">⌘</span>
           </div>
-          <p v-if="item.category" class="card-category">{{ item.category }}</p>
-          <h3 class="card-title">{{ item.title }}</h3>
-        </RouterLink>
+          <div class="hero-inner">
+            <h1 class="hero-title">Li Jin Tong</h1>
+            <p class="hero-kicker">PORTFOLIO</p>
+            <p class="hero-lead">
+              Show you my works.
+            </p>
+          </div>
+        </section>
+
+        <section
+          v-for="(work, index) in projects"
+          :id="'work-' + work.id"
+          :key="work.id"
+          class="spread"
+          :style="{ '--spread-tint': spreadTints[index % spreadTints.length] }"
+        >
+          <div class="spread-row">
+            <div class="spread-cover">
+              <RouterLink
+                :to="{ name: 'WorkDetail', params: { id: work.id } }"
+                class="spread-img-link"
+              >
+                <img :src="work.image" :alt="work.title" width="900" height="560" loading="lazy" />
+              </RouterLink>
+            </div>
+
+            <div class="spread-detail">
+              <h2 class="spread-heading">{{ work.title }}</h2>
+              <div class="spread-meta">
+                <p class="meta-line meta-strong">SELECTED WORK</p>
+                <p class="meta-line muted">Year · 2024</p>
+                <p class="meta-line meta-tools">Motion · Short film · YouTube</p>
+                <RouterLink
+                  class="meta-tag"
+                  :to="{ name: 'WorkDetail', params: { id: work.id } }"
+                >
+                  OPEN FILM →
+                </RouterLink>
+              </div>
+              <div class="spread-desc">
+                <p class="desc-label">DESCRIPTION</p>
+                <p class="desc-body">
+                  {{
+                    work.description ||
+                    '点击左侧封面或下方链接观看完整影像。短片包含概念阐述与成片演示；详情页内嵌播放器并可在 YouTube 打开。'
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="also-enjoy" class="also">
+          <div class="also-head">
+            <h3 class="also-title">You May Also Enjoy</h3>
+            <RouterLink to="/works" class="also-random">VIEW ALL WORKS</RouterLink>
+          </div>
+          <div class="also-grid">
+            <RouterLink
+              v-for="work in projects"
+              :key="'also-' + work.id"
+              :to="{ name: 'WorkDetail', params: { id: work.id } }"
+              class="also-card"
+            >
+              <div class="also-thumb">
+                <img :src="work.image" :alt="work.title" loading="lazy" />
+              </div>
+              <span class="also-name">{{ work.title }}</span>
+            </RouterLink>
+          </div>
+        </section>
       </div>
 
-      <div class="dots" role="tablist" aria-label="轮播页码">
-        <button
-          v-for="(_, index) in pageCount"
-          :key="index"
-          type="button"
-          class="dot"
-          :class="{ 'dot--active': index === activePage }"
-          :aria-label="`第 ${index + 1} 页`"
-          :aria-current="index === activePage ? 'true' : undefined"
-          @click="goToPage(index)"
-        />
-      </div>
-    </section>
+      <aside class="rail rail-right" aria-hidden="true">
+        <span class="rail-text rail-text--down">Selected works</span>
+      </aside>
+
+      <footer class="frame-foot">
+        <span class="corner corner-l">LJT</span>
+        <div class="pill-row">
+          <span
+            v-for="pill in footerPills"
+            :key="pill.label"
+            class="pill"
+            :style="{ background: pill.bg, color: pill.fg || '#111' }"
+          >
+            {{ pill.label }}
+          </span>
+        </div>
+        <span class="corner corner-r">LJT</span>
+      </footer>
+    </div>
   </div>
 </template>
 
@@ -76,299 +125,497 @@ export default {
   data() {
     return {
       projects: portfolioWorks,
-      activePage: 0,
-      pageCount: 1,
-      scrollRaf: null
-    }
-  },
-  mounted() {
-    this.updatePagination()
-    window.addEventListener('resize', this.onResize, { passive: true })
-    this.$nextTick(() => this.updatePagination())
-  },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.onResize)
-    if (this.scrollRaf) cancelAnimationFrame(this.scrollRaf)
-  },
-  methods: {
-    onResize() {
-      this.updatePagination()
-      this.syncActiveFromScroll()
-    },
-    getCarousel() {
-      return this.$refs.carousel
-    },
-    updatePagination() {
-      const el = this.getCarousel()
-      if (!el) return
-      const w = el.clientWidth
-      if (w < 1) {
-        this.pageCount = 1
-        return
-      }
-      const pages = Math.ceil(el.scrollWidth / w - 0.001)
-      this.pageCount = Math.max(1, pages)
-    },
-    syncActiveFromScroll() {
-      const el = this.getCarousel()
-      if (!el) return
-      const w = el.clientWidth
-      if (w < 1) return
-      const idx = Math.round(el.scrollLeft / w)
-      const last = this.pageCount - 1
-      this.activePage = Math.min(last, Math.max(0, idx))
-    },
-    onCarouselScroll() {
-      if (this.scrollRaf) cancelAnimationFrame(this.scrollRaf)
-      this.scrollRaf = requestAnimationFrame(() => {
-        this.syncActiveFromScroll()
-        this.scrollRaf = null
-      })
-    },
-    scrollCarousel(direction) {
-      const el = this.getCarousel()
-      if (!el) return
-      const delta = direction * el.clientWidth * 0.92
-      el.scrollBy({ left: delta, behavior: 'smooth' })
-    },
-    goToPage(index) {
-      const el = this.getCarousel()
-      if (!el) return
-      const last = Math.max(0, this.pageCount - 1)
-      const clamped = Math.min(Math.max(0, index), last)
-      const w = el.clientWidth
-      const maxScroll = Math.max(0, el.scrollWidth - w)
-      const target = Math.min(maxScroll, clamped * w)
-      el.scrollTo({ left: target, behavior: 'smooth' })
+      spreadTints: ['#e8f0fe', '#fde8ef', '#e8f7ef', '#f5f0ff'],
+      footerPills: [
+        { label: 'WRITING', bg: '#111111', fg: '#fff' },
+        { label: 'ICONOGRAPHY', bg: '#e8c547', fg: '#111' },
+        { label: 'LAYOUT', bg: '#4a6fa5', fg: '#fff' },
+        { label: 'SYSTEMS', bg: '#9ec5ff', fg: '#111' },
+        { label: 'ILLUSTRATION', bg: '#e8926c', fg: '#111' },
+        { label: 'TYPOGRAPHY', bg: '#8c6239', fg: '#fff' },
+        { label: 'COLLECTION', bg: '#6bbd7e', fg: '#111' }
+      ]
     }
   }
 }
 </script>
 
 <style scoped>
-.home {
-  --text: #000000;
-  --muted: #888888;
-  --border: #d8d8d8;
-  --surface: #1a1a1a;
-  --page-pad: clamp(1.25rem, 4vw, 2.5rem);
+.home-shell {
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: #ffffff;
-  color: var(--text);
-  padding: clamp(2.5rem, 6vw, 5rem) var(--page-pad) clamp(4rem, 10vw, 6rem);
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.intro {
-  margin-bottom: clamp(3rem, 8vw, 5.5rem);
+.frame {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 2rem;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #ffffff;
+  border: 1px solid #111;
+  border-radius: 0;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-.intro-row {
+.frame-top {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid #111;
+  background: #fff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c41e3a;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.top-link {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.top-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rail {
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #111;
+  background: #fff;
+  min-height: 0;
+}
+
+.rail-right {
+  grid-column: 3;
+  border-right: none;
+  border-left: 1px solid #111;
+}
+
+.rail-text {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: #222;
+  padding: 0.5rem 0;
+}
+
+.rail-text--down {
+  transform: none;
+  writing-mode: vertical-rl;
+}
+
+.frame-scroll {
+  grid-column: 2;
+  grid-row: 2;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(72vh, 520px);
+  background: #fff9d0;
+  border-bottom: 1px solid #111;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.hero-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.deco {
+  position: absolute;
+  font-size: 1.25rem;
+  opacity: 0.55;
+  color: #3d3d3d;
+}
+
+.deco.i1 {
+  top: 14%;
+  left: 10%;
+}
+.deco.i2 {
+  top: 22%;
+  right: 14%;
+  font-size: 1rem;
+}
+.deco.i3 {
+  bottom: 28%;
+  left: 16%;
+}
+.deco.i4 {
+  top: 38%;
+  right: 22%;
+}
+.deco.i5 {
+  bottom: 18%;
+  right: 12%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 2rem) 1.5rem;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(1.75rem, 4.5vw, 2.65rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #111;
+  margin-bottom: 0.75rem;
+}
+
+.hero-kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  color: #444;
+}
+
+.hero-lead {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  line-height: 1.65;
+  color: #333;
+}
+
+.spread {
+  padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1rem, 3vw, 2rem);
+  background: var(--spread-tint, #fff);
+  border-bottom: 1px solid #111;
+}
+
+.spread-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: start;
+}
+
+.spread-cover {
+  min-width: 0;
+}
+
+.spread-detail {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.15rem;
+}
+
+.spread-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #111;
+  line-height: 1.15;
+}
+
+.spread-img-link {
+  display: block;
+  border: 1px solid #111;
+  background: #fff;
+  line-height: 0;
+}
+
+.spread-img-link img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.spread-meta {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.meta-line {
+  margin: 0 0 0.35rem;
+}
+
+.meta-strong {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+}
+
+.meta-line.muted {
+  color: #555;
+}
+
+.meta-tools {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: #444;
+}
+
+.meta-tag {
+  display: inline-block;
+  margin-top: 0.65rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #2e7d32;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.meta-tag:hover {
+  opacity: 0.75;
+}
+
+.spread-desc {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.desc-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.desc-body {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #222;
+  margin: 0;
+}
+
+.spread-detail .spread-meta {
+  margin: 0;
+}
+
+.spread-detail .spread-desc {
+  margin-top: 0.25rem;
+}
+
+.also {
+  padding: clamp(1.75rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem) 2rem;
+  background: #fff;
+}
+
+.also-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
+  margin-bottom: 1.25rem;
   flex-wrap: wrap;
 }
 
-.intro-title {
-  font-size: clamp(2.25rem, 5vw, 3.25rem);
+.also-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin: 0;
 }
 
-.intro-about {
-  flex-shrink: 0;
-  font-size: clamp(0.9375rem, 2vw, 1rem);
-  font-weight: 500;
-  color: #888888;
-  text-decoration: none;
-  transition: opacity 0.2s ease, color 0.2s ease;
+.also-random {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #111;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.intro-about:hover {
-  color: #666666;
-  opacity: 0.92;
+.also-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
 }
 
-.featured-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.5rem;
-  margin-bottom: clamp(2rem, 5vw, 3rem);
-}
-
-.featured-title {
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.12;
-  margin: 0;
-}
-
-.title-line {
-  display: block;
-}
-
-.featured-nav {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  padding-top: 0.25rem;
-}
-
-.nav-btn {
-  width: 2.75rem;
-  height: 2.75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  line-height: 1;
-  border: 1px solid var(--border);
-  background: #ffffff;
-  color: var(--text);
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.nav-btn:hover {
-  opacity: 0.85;
-}
-
-.nav-btn--dark {
-  background: var(--surface);
-  color: #ffffff;
-  border-color: var(--surface);
-}
-
-.carousel {
-  display: flex;
-  gap: clamp(1rem, 2.5vw, 1.5rem);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 0.5rem;
-  margin: 0 calc(-1 * var(--page-pad));
-  padding-left: var(--page-pad);
-  padding-right: var(--page-pad);
-  scrollbar-width: thin;
-}
-
-.carousel:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 4px;
-}
-
-.card-link {
+.also-card {
   text-decoration: none;
   color: inherit;
-  cursor: pointer;
-  transition: box-shadow 0.25s ease;
+  border: 1px solid #111;
+  background: #fafafa;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card-link:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 3px;
+.also-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 #111;
 }
 
-.card-link:hover {
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1);
-}
-
-.card {
-  flex: 0 0 min(100%, 22rem);
-  scroll-snap-align: start;
-  background: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+.also-thumb {
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
+  border-bottom: 1px solid #111;
 }
 
-@media (min-width: 640px) {
-  .card {
-    flex: 0 0 calc((100% - 1.25rem) / 2);
-    max-width: none;
-  }
-}
-
-@media (min-width: 1024px) {
-  .card {
-    flex: 0 0 calc((100% - 3 * 1.25rem) / 4);
-  }
-}
-
-.card-media {
-  aspect-ratio: 16 / 10;
-  background: #f4f4f4;
-  overflow: hidden;
-}
-
-.card-media img {
+.also-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.also-name {
   display: block;
-  transition: transform 0.35s ease;
-}
-
-.card:hover .card-media img {
-  transform: scale(1.03);
-}
-
-.card-category {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  margin: 1rem 1.25rem 0.35rem;
-}
-
-.card-media + .card-title {
-  margin-top: 1rem;
-}
-
-.card-title {
-  font-size: 1.0625rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.72rem;
   font-weight: 600;
-  line-height: 1.45;
-  margin: 0 1.25rem 1.25rem;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  padding: 0.5rem 0.45rem;
+  text-align: center;
 }
 
-.dots {
+.frame-foot {
+  grid-column: 1 / -1;
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
+  justify-content: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  padding: 0.55rem 2.25rem;
+  border-top: 1px solid #111;
+  background: #fff;
 }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: none;
-  padding: 0;
-  background: #d0d0d0;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
 }
 
-.dot:hover {
-  transform: scale(1.1);
+.pill {
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.28rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.dot--active {
-  background: #555555;
+.corner {
+  position: absolute;
+  bottom: 0.35rem;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #444;
+}
+
+.corner-l {
+  left: 0.5rem;
+}
+
+.corner-r {
+  right: 0.5rem;
+}
+
+@media (max-width: 720px) {
+  .frame {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .rail {
+    grid-column: 1;
+    grid-row: auto;
+    border: none;
+    border-bottom: 1px solid #111;
+    padding: 0.35rem 0;
+  }
+
+  .rail-left .rail-text {
+    writing-mode: horizontal-tb;
+    transform: none;
+    letter-spacing: 0.2em;
+  }
+
+  .rail-right .rail-text {
+    writing-mode: horizontal-tb;
+    letter-spacing: 0.2em;
+  }
+
+  .frame-scroll {
+    grid-column: 1;
+    grid-row: auto;
+    min-height: 50vh;
+  }
+
+  .spread-row {
+    grid-template-columns: 1fr;
+  }
+
+  .spread-detail {
+    padding-top: 0;
+  }
+
+  .also-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .corner {
+    display: none;
+  }
 }
 </style>

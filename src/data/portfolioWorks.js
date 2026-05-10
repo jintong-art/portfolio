@@ -2,6 +2,9 @@
  * 作品集单一数据源：首页「精选作品」与作品列表、详情页共用。
  */
 
+/** `public/` 下的静态资源（兼容 GitHub Pages 的 Base URL） */
+const pub = (file) => `${import.meta.env.BASE_URL}${file}`
+
 /** 从 YouTube 分享链接解析视频 ID，用于 embed */
 export function youtubeVideoId(url) {
   if (!url || typeof url !== 'string') return null
@@ -33,7 +36,7 @@ export const portfolioWorks = [
     id: 1,
     category: '',
     title: 'JEEP',
-    image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80',
+    image: pub('ljt3.png'),
     description: '',
     tags: [],
     youtubeUrl: 'https://youtu.be/f5S9rP8NIkg?si=1JH0tXU5_7ThpoqL'
@@ -42,7 +45,7 @@ export const portfolioWorks = [
     id: 2,
     category: '',
     title: 'THE SEA',
-    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
+    image: pub('ljt2.png'),
     description: '',
     tags: [],
     youtubeUrl: 'https://youtu.be/KNdo8s86aiY?si=K_HMv7aeZhX9cPuv'
@@ -51,7 +54,7 @@ export const portfolioWorks = [
     id: 3,
     category: '',
     title: 'THE DESERT SECRET',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80',
+    image: pub('ljt1.png'),
     description: '',
     tags: [],
     youtubeUrl: 'https://youtu.be/EFMsKjfEXjg?si=FEDAHunAhwoOWSDI'
