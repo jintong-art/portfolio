@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:gh": "GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-jintong-art/portfolio} vite build && cp dist/index.html dist/404.html",
     "preview": "vite preview"
   },
   "dependencies": {

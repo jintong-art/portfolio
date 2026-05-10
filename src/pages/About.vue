@@ -1,19 +1,15 @@
 <template>
   <div class="about">
-    <!-- About Header -->
-    <section class="about-header">
-      <div class="about-header-wrapper">
-        <h1 class="page-title">关于我</h1>
-        <p class="page-subtitle">设计师、研究者、问题解决者</p>
-      </div>
-    </section>
+    <header class="page-head">
+      <h1 class="page-title">关于</h1>
+      <p class="page-desc">设计师、研究者、问题解决者</p>
+    </header>
 
-    <!-- About Content -->
-    <section class="about-section">
-      <div class="section-wrapper">
-        <div class="about-content">
-          <div class="about-text">
-            <h2 class="section-title">我的故事</h2>
+    <section class="block">
+      <div class="inner">
+        <div class="layout">
+          <div class="prose">
+            <h2 class="block-title">我的故事</h2>
             <p>
               我是一名产品设计师和研究者，致力于通过设计解决实际问题。我相信好的设计应该是对用户需求的深刻理解。
             </p>
@@ -24,123 +20,42 @@
               除了设计，我也进行相关的学术研究，发表论文并参与行业讨论。我热衷于探索设计与研究的交叉点，寻找创新和实用的平衡。
             </p>
           </div>
-
-          <div class="about-stats">
-            <div class="stat-item">
-              <div class="stat-number">3+</div>
-              <div class="stat-label">年设计经验</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">12</div>
-              <div class="stat-label">完成项目</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">5</div>
-              <div class="stat-label">发表论文</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">8+</div>
-              <div class="stat-label">合作品牌</div>
+          <div class="stats">
+            <div v-for="s in stats" :key="s.label" class="stat">
+              <div class="stat-num">{{ s.value }}</div>
+              <div class="stat-label">{{ s.label }}</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Skills Section -->
-    <section class="skills-section">
-      <div class="section-wrapper">
-        <h2 class="section-title">核心技能</h2>
-        
-        <div class="skills-grid">
-          <div class="skill-group">
-            <h3 class="skill-category">设计</h3>
+    <section class="block block--soft">
+      <div class="inner">
+        <h2 class="block-title">核心技能</h2>
+        <div class="skills">
+          <div v-for="g in skillGroups" :key="g.title" class="skill-col">
+            <h3 class="skill-head">{{ g.title }}</h3>
             <ul class="skill-list">
-              <li class="skill">UI Design</li>
-              <li class="skill">UX Research</li>
-              <li class="skill">Design System</li>
-              <li class="skill">Prototyping</li>
-              <li class="skill">User Testing</li>
-            </ul>
-          </div>
-
-          <div class="skill-group">
-            <h3 class="skill-category">工具</h3>
-            <ul class="skill-list">
-              <li class="skill">Figma</li>
-              <li class="skill">Adobe XD</li>
-              <li class="skill">Sketch</li>
-              <li class="skill">Protopie</li>
-              <li class="skill">Framer</li>
-            </ul>
-          </div>
-
-          <div class="skill-group">
-            <h3 class="skill-category">研究方法</h3>
-            <ul class="skill-list">
-              <li class="skill">用户访谈</li>
-              <li class="skill">可用性测试</li>
-              <li class="skill">数据分析</li>
-              <li class="skill">竞品分析</li>
-              <li class="skill">信息建筑</li>
-            </ul>
-          </div>
-
-          <div class="skill-group">
-            <h3 class="skill-category">其他</h3>
-            <ul class="skill-list">
-              <li class="skill">项目管理</li>
-              <li class="skill">团队协作</li>
-              <li class="skill">演讲展示</li>
-              <li class="skill">学术写作</li>
+              <li v-for="item in g.items" :key="item">{{ item }}</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Experience Timeline -->
-    <section class="experience-section">
-      <div class="section-wrapper">
-        <h2 class="section-title">工作经历</h2>
-        
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">产品设计师</h3>
-              <p class="timeline-company">科技公司 A</p>
-              <p class="timeline-period">2021 - 至今</p>
-              <p class="timeline-description">
-                负责核心产品的 UI/UX 设计和用户研究，与产品经理和开发团队紧密合作。
-              </p>
+    <section class="block">
+      <div class="inner">
+        <h2 class="block-title">工作经历</h2>
+        <ol class="timeline">
+          <li v-for="(job, i) in jobs" :key="i" class="timeline-item">
+            <div class="timeline-card">
+              <h3 class="job-title">{{ job.title }}</h3>
+              <p class="job-meta">{{ job.company }} · {{ job.period }}</p>
+              <p class="job-desc">{{ job.description }}</p>
             </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">设计师</h3>
-              <p class="timeline-company">设计工作室 B</p>
-              <p class="timeline-period">2018 - 2021</p>
-              <p class="timeline-description">
-                参与多个品牌和产品的设计项目，从品牌设计到交互设计。
-              </p>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <h3 class="timeline-title">初级设计师</h3>
-              <p class="timeline-company">创业公司 C</p>
-              <p class="timeline-period">2017 - 2018</p>
-              <p class="timeline-description">
-                学习产品设计的全流程，参与产品从 0 到 1 的打造。
-              </p>
-            </div>
-          </div>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
   </div>
@@ -148,259 +63,230 @@
 
 <script>
 export default {
-  name: 'About'
+  name: 'About',
+  data() {
+    return {
+      stats: [
+        { value: '3+', label: '年设计经验' },
+        { value: '12', label: '完成项目' },
+        { value: '5', label: '发表论文' },
+        { value: '8+', label: '合作品牌' }
+      ],
+      skillGroups: [
+        {
+          title: '设计',
+          items: ['UI Design', 'UX Research', 'Design System', 'Prototyping', 'User Testing']
+        },
+        {
+          title: '工具',
+          items: ['Figma', 'Adobe XD', 'Sketch', 'Protopie', 'Framer']
+        },
+        {
+          title: '研究方法',
+          items: ['用户访谈', '可用性测试', '数据分析', '竞品分析', '信息架构']
+        },
+        {
+          title: '其他',
+          items: ['项目管理', '团队协作', '演讲展示', '学术写作']
+        }
+      ],
+      jobs: [
+        {
+          title: '产品设计师',
+          company: '科技公司 A',
+          period: '2021 — 至今',
+          description: '负责核心产品的 UI/UX 设计和用户研究，与产品经理和开发团队紧密合作。'
+        },
+        {
+          title: '设计师',
+          company: '设计工作室 B',
+          period: '2018 — 2021',
+          description: '参与多个品牌和产品的设计项目，从品牌设计到交互设计。'
+        },
+        {
+          title: '初级设计师',
+          company: '创业公司 C',
+          period: '2017 — 2018',
+          description: '学习产品设计的全流程，参与产品从 0 到 1 的打造。'
+        }
+      ]
+    }
+  }
 }
 </script>
 
 <style scoped>
 .about {
   width: 100%;
+  background: #ffffff;
+  color: #000000;
 }
 
-/* About Header */
-.about-header {
-  padding: 4rem 2rem;
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(123, 104, 238, 0.1) 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.about-header-wrapper {
+.page-head {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2rem);
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
 }
 
 .page-title {
-  font-size: 2.8rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #fff;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
 }
 
-.page-subtitle {
-  font-size: 1.1rem;
-  color: #a0a0a0;
-  font-weight: 300;
+.page-desc {
+  font-size: 0.9375rem;
+  color: #888888;
 }
 
-/* Section */
-.section-wrapper {
+.block {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2.5rem);
+  border-top: 1px solid #eeeeee;
+}
+
+.block--soft {
+  background: #fafafa;
+}
+
+.inner {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.section-title {
-  font-size: 2.2rem;
+.block-title {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
   font-weight: 700;
-  color: #fff;
-  margin-bottom: 2rem;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
 }
 
-/* About Section */
-.about-section {
-  padding: 5rem 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.about-content {
+.layout {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 4rem;
+  gap: clamp(2rem, 5vw, 3.5rem);
   align-items: start;
 }
 
-.about-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.prose p {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: #444444;
+  margin-bottom: 1rem;
 }
 
-.about-text p {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: #a0a0a0;
+.prose p:last-child {
+  margin-bottom: 0;
 }
 
-.about-stats {
+.stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
-.stat-item {
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
+.stat {
+  padding: 1.25rem;
+  border: 1px solid #eeeeee;
+  background: #ffffff;
   text-align: center;
 }
 
-.stat-number {
-  font-size: 2.5rem;
+.stat-num {
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #4a90e2;
-  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
 }
 
 .stat-label {
-  font-size: 0.95rem;
-  color: #b0b0b0;
+  font-size: 0.8125rem;
+  color: #888888;
 }
 
-/* Skills Section */
-.skills-section {
-  padding: 5rem 2rem;
-  background: rgba(20, 20, 20, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.skills-grid {
+.skills {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
 }
 
-.skill-group {
+.skill-head {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888888;
+  margin-bottom: 0.75rem;
+}
+
+.skill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skill-list li {
+  font-size: 0.9375rem;
+  color: #333333;
+  padding-left: 0.75rem;
+  position: relative;
+}
+
+.skill-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #888888;
+  font-size: 0.75rem;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.skill-category {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #4a90e2;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.skill-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.skill {
-  font-size: 0.95rem;
-  color: #b0b0b0;
-  padding-left: 1rem;
-  position: relative;
-}
-
-.skill::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  color: #4a90e2;
-}
-
-/* Experience Section */
-.experience-section {
-  padding: 5rem 2rem;
-}
-
-.timeline {
-  position: relative;
-  padding-left: 2rem;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: rgba(74, 144, 226, 0.3);
-}
-
 .timeline-item {
-  position: relative;
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
+  margin: 0;
 }
 
-.timeline-dot {
-  position: absolute;
-  left: -2.1rem;
-  top: 0.3rem;
-  width: 1rem;
-  height: 1rem;
-  background: #4a90e2;
-  border: 3px solid #0f0f0f;
-  border-radius: 50%;
+.timeline-card {
+  border: 1px solid #eeeeee;
+  padding: 1.25rem 1.5rem;
+  background: #ffffff;
 }
 
-.timeline-content {
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-}
-
-.timeline-title {
-  font-size: 1.2rem;
+.job-title {
+  font-size: 1.0625rem;
   font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
 }
 
-.timeline-company {
-  font-size: 0.95rem;
-  color: #4a90e2;
-  margin-bottom: 0.3rem;
+.job-meta {
+  font-size: 0.8125rem;
+  color: #888888;
+  margin-bottom: 0.75rem;
 }
 
-.timeline-period {
-  font-size: 0.85rem;
-  color: #808080;
-  margin-bottom: 0.8rem;
+.job-desc {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: #444444;
 }
 
-.timeline-description {
-  font-size: 0.95rem;
-  color: #a0a0a0;
-  line-height: 1.6;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .page-title {
-    font-size: 2rem;
-  }
-
-  .page-subtitle {
-    font-size: 1rem;
-  }
-
-  .section-title {
-    font-size: 1.8rem;
-  }
-
-  .about-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .about-stats {
+  .layout {
     grid-template-columns: 1fr;
   }
 
-  .skills-grid {
+  .stats {
     grid-template-columns: 1fr;
-  }
-
-  .about-header {
-    padding: 2rem;
-  }
-
-  .about-section,
-  .skills-section,
-  .experience-section {
-    padding: 3rem 2rem;
   }
 }
 </style>

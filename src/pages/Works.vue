@@ -1,98 +1,40 @@
 <template>
   <div class="works">
-    <!-- Header -->
-    <div class="works-header">
-      <div class="header-content">
-        <h1>我的作品</h1>
-        <p>精选项目和设计案例</p>
-      </div>
-    </div>
+    <header class="page-head">
+      <h1 class="page-title">作品</h1>
+      <p class="page-desc">精选项目与过程记录</p>
+    </header>
 
-    <!-- Works Grid -->
-    <div class="works-container">
-      <div class="works-grid">
-        <div v-for="work in works" :key="work.id" class="work-card">
-          <!-- Video -->
-          <div class="video-wrapper" 
-               @mouseenter="handleMouseEnter(work.id)"
-               @mouseleave="handleMouseLeave(work.id)">
-            <video 
-              :ref="`video-${work.id}`"
-              :src="work.video"
-              class="video"
-              muted
-            ></video>
-            <div class="video-controls">
-              <span class="play-btn">▶ 播放</span>
-            </div>
+    <div class="works-inner">
+      <div class="grid">
+        <RouterLink
+          v-for="work in works"
+          :key="work.id"
+          :to="{ name: 'WorkDetail', params: { id: work.id } }"
+          class="work-card"
+        >
+          <div class="media">
+            <img :src="work.image" :alt="work.title" width="640" height="360" loading="lazy" />
           </div>
-
-          <!-- Content -->
-          <div class="card-content">
-            <h3 class="work-title">{{ work.title }}</h3>
-            <p class="work-desc">{{ work.description }}</p>
-            <div class="tags">
-              <span v-for="tag in work.tags" :key="tag" class="tag">{{ tag }}</span>
-            </div>
+          <div class="body">
+            <p v-if="work.tags.length" class="tags-inline">{{ work.tags.join(' · ') }}</p>
+            <h2 class="work-title">{{ work.title }}</h2>
+            <p v-if="work.description" class="work-desc">{{ work.description }}</p>
           </div>
-        </div>
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { portfolioWorks } from '../data/portfolioWorks.js'
+
 export default {
   name: 'Works',
   data() {
     return {
-      works: [
-        {
-          id: 1,
-          title: '作品一',
-          description: '简洁的项目描述',
-          tags: ['设计', '2024'],
-          video: '/videos/work1.mp4',
-          startTime: 2  // 从第2秒开始
-        },
-        {
-          id: 2,
-          title: '作品二',
-          description: '简洁的项目描述',
-          tags: ['设计', '2024'],
-          video: '/videos/work2.mp4',
-          startTime: 265  // 从第265秒开始 (4分25秒)
-        },
-        {
-          id: 3,
-          title: '作品三',
-          description: '简洁的项目描述',
-          tags: ['设计', '2024'],
-          video: '/videos/work3.mp4',
-          startTime: 15  // 从第15秒开始
-        }
-      ]
-    }
-  },
-  methods: {
-    handleMouseEnter(id) {
-      const work = this.works.find(w => w.id === id)
-      const videoRef = this.$refs[`video-${id}`]
-      if (videoRef && videoRef[0]) {
-        // 设置开始时间
-        videoRef[0].currentTime = work.startTime || 0
-        // 播放
-        videoRef[0].play()
-      }
-    },
-    handleMouseLeave(id) {
-      const work = this.works.find(w => w.id === id)
-      const videoRef = this.$refs[`video-${id}`]
-      if (videoRef && videoRef[0]) {
-        videoRef[0].pause()
-        // 回到开始时间
-        videoRef[0].currentTime = work.startTime || 0
-      }
+      works: portfolioWorks
     }
   }
 }
@@ -101,139 +43,102 @@ export default {
 <style scoped>
 .works {
   width: 100%;
+  background: #ffffff;
+  color: #000000;
 }
 
-.works-header {
-  padding: 4rem 2rem;
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(123, 104, 238, 0.1) 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  text-align: center;
-}
-
-.header-content h1 {
-  font-size: 2.8rem;
-  color: #fff;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-}
-
-.header-content p {
-  font-size: 1.1rem;
-  color: #a0a0a0;
-}
-
-.works-container {
+.page-head {
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2rem);
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5rem 2rem;
 }
 
-.works-grid {
+.page-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
+}
+
+.page-desc {
+  font-size: 0.9375rem;
+  color: #888888;
+}
+
+.works-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem) clamp(4rem, 10vw, 6rem);
+}
+
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 .work-card {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  background: #ffffff;
+  text-decoration: none;
+  color: inherit;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: box-shadow 0.25s ease;
 }
 
 .work-card:hover {
-  transform: translateY(-8px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1);
 }
 
-.video-wrapper {
+.work-card:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+}
+
+.media {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: #1a1a1a;
-  border-radius: 8px;
+  background: #f4f4f4;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.video {
+.media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.35s ease;
 }
 
-.video-controls {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.work-card:hover .media img {
+  transform: scale(1.03);
+}
+
+.body {
+  padding: 1.25rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.work-card:hover .video-controls {
-  opacity: 1;
-}
-
-.play-btn {
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: 600;
-  padding: 0.8rem 1.5rem;
-  background: rgba(74, 144, 226, 0.9);
-  border-radius: 6px;
-  text-align: center;
-}
-
-.card-content {
-  padding: 0;
+.tags-inline {
+  font-size: 0.8125rem;
+  color: #888888;
 }
 
 .work-title {
-  font-size: 1.3rem;
-  color: #fff;
-  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
   font-weight: 600;
+  line-height: 1.35;
 }
 
 .work-desc {
-  font-size: 0.95rem;
-  color: #a0a0a0;
-  margin-bottom: 1rem;
+  font-size: 0.9375rem;
   line-height: 1.6;
-}
-
-.tags {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.tag {
-  display: inline-block;
-  font-size: 0.8rem;
-  padding: 0.3rem 0.8rem;
-  background: rgba(74, 144, 226, 0.2);
-  color: #4a90e2;
-  border-radius: 4px;
-  border: 1px solid rgba(74, 144, 226, 0.3);
-}
-
-@media (max-width: 768px) {
-  .works-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .header-content h1 {
-    font-size: 2rem;
-  }
-
-  .works-container {
-    padding: 3rem 1rem;
-  }
+  color: #444444;
 }
 </style>
