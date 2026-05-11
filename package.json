@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:gh": "GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-jintong-art/portfolio} vite build && cp dist/index.html dist/404.html",
+    "build": "GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-jintong-art/portfolio} vite build && cp dist/index.html dist/404.html",
+    "build:root": "env -u GITHUB_REPOSITORY vite build && cp dist/index.html dist/404.html",
+    "build:gh": "npm run build",
     "preview": "vite preview"
   },
   "dependencies": {

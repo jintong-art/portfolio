@@ -3,8 +3,8 @@ import vue from '@vitejs/plugin-vue'
 
 /**
  * GitHub Pages 项目页：https://<用户>.github.io/<仓库名>/
- * CI 中会设置 GITHUB_REPOSITORY=owner/repo，以便自动得到正确的 base。
- * 本地开发 / 本地 build 未设置时使用 '/'。
+ * - CI 会设置 GITHUB_REPOSITORY；本地请用 `npm run build`（默认与仓库路径一致）。
+ * - 部署在域名根目录时用：`npm run build:root`（base 为 `/`）。
  */
 const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1]
 const base = repoName ? `/${repoName}/` : '/'

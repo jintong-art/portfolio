@@ -28,14 +28,11 @@ jobs:
 
       - run: npm ci
 
+      # build 内含 SPA 的 404.html；GITHUB_REPOSITORY 由 CI 注入以匹配 /owner/repo/ 路径
       - name: Build
         run: npm run build
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
-
-      # GitHub Pages 对未知路径返回 404.html；复制 index 以便 Vue Router history 模式可刷新
-      - name: SPA fallback
-        run: cp dist/index.html dist/404.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
