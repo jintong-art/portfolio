@@ -7,7 +7,8 @@
     "build": "GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-jintong-art/portfolio} vite build && cp dist/index.html dist/404.html",
     "build:root": "env -u GITHUB_REPOSITORY vite build && cp dist/index.html dist/404.html",
     "build:gh": "npm run build",
-    "preview": "vite preview"
+    "preview": "GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-jintong-art/portfolio} vite preview",
+    "preview:root": "env -u GITHUB_REPOSITORY vite preview"
   },
   "dependencies": {
     "vue": "^3.3.4",
